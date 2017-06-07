@@ -17,12 +17,8 @@ func main() {
 
 	flags := []cli.Flag{
 		cli.StringFlag{
-			Name:  "credential",
-			Value: "credential.yaml",
-		},
-		cli.StringFlag{
 			Name:  "config, c",
-			Value: "config.yaml",
+			Value: "cfn.yaml",
 		},
 	}
 

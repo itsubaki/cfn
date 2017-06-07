@@ -1,14 +1,7 @@
 # cfn
 AWS CloudFormation command line tool.
 
-## credential.yaml
-
-```yaml
-access_key:
-secret_key:
-```
-
-## config.yaml
+## cfn.yaml
 
 ```yaml
 template:
