@@ -10,7 +10,7 @@ template:
   - template/s3.yaml
   - template/elb.yaml
   - template/ec2.yaml
-vars:
+parameters:
   ProjectName: myproject
   KeyPair: mykeypair
   CertificateArn:
