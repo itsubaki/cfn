@@ -1,2 +1,2 @@
 # cfn
-AWS Cloudformation cli
+AWS CloudFormation command line tool.
