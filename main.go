@@ -25,7 +25,7 @@ func main() {
 	validate := cli.Command{
 		Name:    "validate",
 		Aliases: []string{"v"},
-		Usage:   "Validates a specified template.",
+		Usage:   "Validates a specified template",
 		Flags:   flags,
 		Action:  stack.Validate,
 	}
@@ -33,13 +33,13 @@ func main() {
 	stack := cli.Command{
 		Name:    "stack",
 		Aliases: []string{"s"},
-		Usage:   "Create, Update, Delete, Describe Stack.",
+		Usage:   "Create, Update, Delete, Describe Stack",
 		Subcommands: []cli.Command{
 			{
 				Name:    "create",
 				Action:  stack.Create,
 				Aliases: []string{"c"},
-				Usage:   "Creates a stack as specified in the template.",
+				Usage:   "Creates a stack as specified in the template",
 				Flags: append(flags,
 					cli.StringFlag{
 						Name:  "name, n",
@@ -50,7 +50,7 @@ func main() {
 				Name:    "update",
 				Action:  stack.Update,
 				Aliases: []string{"u"},
-				Usage:   "Updates a stack as specified in the template.",
+				Usage:   "Updates a stack as specified in the template",
 				Flags: append(flags,
 					cli.StringFlag{
 						Name:  "name, n",
@@ -61,7 +61,7 @@ func main() {
 				Name:    "delete",
 				Action:  stack.Delete,
 				Aliases: []string{"d"},
-				Usage:   "Deletes a specified stack.",
+				Usage:   "Deletes a specified stack",
 				Flags: append(flags,
 					cli.StringFlag{
 						Name:  "name, n",
@@ -72,7 +72,7 @@ func main() {
 				Name:    "describe",
 				Action:  stack.Describe,
 				Aliases: []string{"desc"},
-				Usage:   "Returns the description for the specified stack.",
+				Usage:   "Returns the description for the specified stack",
 				Flags: append(flags,
 					cli.StringFlag{
 						Name:  "name, n",
@@ -85,13 +85,13 @@ func main() {
 	changeset := cli.Command{
 		Name:    "changeset",
 		Aliases: []string{"cs"},
-		Usage:   "Create, Execute, Delete, Describe Changeset.",
+		Usage:   "Create, Execute, Delete, Describe Changeset",
 		Subcommands: []cli.Command{
 			{
 				Name:    "create",
 				Action:  changeset.Create,
 				Aliases: []string{"c"},
-				Usage:   "Creates a list of changes that will be applied to a stack so that you can review the changes before executing them.",
+				Usage:   "Creates a list of changes that will be applied to a stack so that you can review the changes before executing them",
 				Flags: append(flags,
 					cli.StringFlag{
 						Name:  "name, n",
@@ -102,7 +102,7 @@ func main() {
 				Name:    "execute",
 				Action:  changeset.Execute,
 				Aliases: []string{"e"},
-				Usage:   "Updates a stack using the input information that was provided when the specified change set was created.",
+				Usage:   "Updates a stack using the input information that was provided when the specified change set was created",
 				Flags: append(flags,
 					cli.StringFlag{
 						Name:  "name, n",
@@ -113,7 +113,7 @@ func main() {
 				Name:    "delete",
 				Action:  changeset.Delete,
 				Aliases: []string{"d"},
-				Usage:   "Deletes the specified change set.",
+				Usage:   "Deletes the specified change set",
 				Flags: append(flags,
 					cli.StringFlag{
 						Name:  "name, n",
@@ -124,7 +124,7 @@ func main() {
 				Name:    "describe",
 				Action:  changeset.Describe,
 				Aliases: []string{"desc"},
-				Usage:   "Returns the inputs for the change set and a list of changes that AWS CloudFormation will make if you execute the change set.",
+				Usage:   "Returns the inputs for the change set and a list of changes that AWS CloudFormation will make if you execute the change set",
 				Flags: append(flags,
 					cli.StringFlag{
 						Name:  "name, n",
