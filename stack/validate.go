@@ -31,8 +31,6 @@ func Validate(c *cli.Context) {
 
 	list := config["Templates"].([]interface{})
 	for i := 0; i < len(list); i++ {
-		fmt.Println()
-
 		name := list[i].(string)
 		fmt.Println(name)
 
