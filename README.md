@@ -5,25 +5,25 @@
 
 ## Example
 
- ```console
- $ ls
- cfn.yaml	template
-
- $ cat cfn.yaml
- Templates:
-   - template/vpc.yaml
-   - template/subnet.yaml
-   - template/sg.yaml
- Parameters:
+```console
+$ ls
+cfn.yaml	template
+$ cat cfn.yaml
+Templates:
+ - template/vpc.yaml
+ - template/subnet.yaml
+ - template/sg.yaml
+Parameters:
    - ProjectName: test
 
- $ cfn stack create test
- template/vpc.yaml created.
- template/subnet.yaml created.
- template/sg.yaml created.
+// first argument is stack group name
+$ cfn stack create test
+template/vpc.yaml created.
+template/subnet.yaml created.
+template/sg.yaml created.
 
- $ cfn stack delete test
- template/sg.yaml deleted.
- template/subnet.yaml deleted.
- template/vpc.yaml deleted.
- ```
+$ cfn stack delete test
+template/sg.yaml deleted.
+template/subnet.yaml deleted.
+template/vpc.yaml deleted.
+```
