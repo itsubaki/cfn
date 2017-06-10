@@ -2,32 +2,22 @@ package stack
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"strings"
 
 	"github.com/aws/aws-sdk-go/aws/session"
 	cf "github.com/aws/aws-sdk-go/service/cloudformation"
+	cfg "github.com/itsubaki/cfn/config"
 	cli "gopkg.in/urfave/cli.v1"
-	yaml "gopkg.in/yaml.v2"
 )
 
 func Create(c *cli.Context) {
 	if len(c.Args()) < 1 {
-		fmt.Println("error: stack name is null.")
+		fmt.Println("error: stack group name is null.")
 		os.Exit(1)
 	}
 
-	path := c.String("config")
-
-	buf, err := ioutil.ReadFile(path)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	config := make(map[interface{}]interface{})
-	err = yaml.Unmarshal(buf, &config)
+	config, err := cfg.Read(c.String("config"))
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -37,21 +27,20 @@ func Create(c *cli.Context) {
 
 	list := config["Templates"].([]interface{})
 	for i := 0; i < len(list); i++ {
-		tmplpath := list[i].(string)
-		fmt.Print(tmplpath)
+		tmpl := list[i].(string)
+		fmt.Print(tmpl)
 
-		buf, err := ioutil.ReadFile(tmplpath)
+		tmp := strings.Replace(tmpl, "/", "-", -1)
+		suffix := strings.Replace(tmp, ".yaml", "", -1)
+		name := c.Args().Get(0) + "-" + suffix
+
+		body, err := cfg.TemplateBody(tmpl)
 		if err != nil {
 			fmt.Println()
 			fmt.Println(err)
 			continue
 		}
 
-		tmp := strings.Replace(tmplpath, "/", "-", -1)
-		suffix := strings.Replace(tmp, ".yaml", "", -1)
-		name := c.Args().Get(0) + "-" + suffix
-
-		body := string(buf)
 		create := &cf.CreateStackInput{
 			StackName:    &name,
 			TemplateBody: &body,
