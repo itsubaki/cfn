@@ -3,6 +3,7 @@ package stack
 import (
 	"fmt"
 	"io/ioutil"
+	"os"
 	"strings"
 
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -12,6 +13,11 @@ import (
 )
 
 func Create(c *cli.Context) {
+	if len(c.Args()) < 1 {
+		fmt.Println("error: stack name is null.")
+		os.Exit(1)
+	}
+
 	path := c.String("config")
 
 	buf, err := ioutil.ReadFile(path)
@@ -31,40 +37,41 @@ func Create(c *cli.Context) {
 
 	list := config["Templates"].([]interface{})
 	for i := 0; i < len(list); i++ {
-		tmplname := list[i].(string)
-		fmt.Println(tmplname)
+		tmplpath := list[i].(string)
+		fmt.Print(tmplpath)
 
-		buf, err := ioutil.ReadFile(tmplname)
+		buf, err := ioutil.ReadFile(tmplpath)
 		if err != nil {
+			fmt.Println()
 			fmt.Println(err)
 			continue
 		}
 
-		tmp := strings.Replace(tmplname, "/", "-", -1)
+		tmp := strings.Replace(tmplpath, "/", "-", -1)
 		suffix := strings.Replace(tmp, ".yaml", "", -1)
 		name := c.Args().Get(0) + "-" + suffix
 
-		tmpl := string(buf)
+		body := string(buf)
 		create := &cf.CreateStackInput{
 			StackName:    &name,
-			TemplateBody: &tmpl,
+			TemplateBody: &body,
 		}
 
-		out, err := client.CreateStack(create)
+		res, err := client.CreateStack(create)
 		if err != nil {
+			fmt.Println()
 			fmt.Println(err)
 			continue
 		}
 
-		desc := &cf.DescribeStacksInput{
-			StackName: &name,
-		}
+		desc := &cf.DescribeStacksInput{StackName: &name}
 		err = client.WaitUntilStackCreateComplete(desc)
 		if err != nil {
+			fmt.Println()
 			fmt.Println(err)
 			continue
 		}
 
-		fmt.Println(out)
+		fmt.Println(" created. " + *res.StackId)
 	}
 }

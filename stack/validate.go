@@ -31,26 +31,26 @@ func Validate(c *cli.Context) {
 
 	list := config["Templates"].([]interface{})
 	for i := 0; i < len(list); i++ {
-		name := list[i].(string)
-		fmt.Println(name)
+		tmplpath := list[i].(string)
+		fmt.Print(tmplpath)
 
-		buf, err := ioutil.ReadFile(name)
+		buf, err := ioutil.ReadFile(tmplpath)
 		if err != nil {
+			fmt.Println()
 			fmt.Println(err)
 			continue
 		}
 
-		tmpl := string(buf)
-		input := &cf.ValidateTemplateInput{
-			TemplateBody: &tmpl,
+		body := string(buf)
+		input := &cf.ValidateTemplateInput{TemplateBody: &body}
+		_, err = client.ValidateTemplate(input)
+		if err != nil {
+			fmt.Println()
+			fmt.Println(err)
+			continue
 		}
 
-		out, err := client.ValidateTemplate(input)
-		if err != nil {
-			fmt.Println(err)
-		} else {
-			fmt.Println(out)
-		}
+		fmt.Println(" ok.")
 	}
 
 }
