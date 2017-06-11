@@ -35,6 +35,6 @@ template/sg.yaml     created. test-template-sg
 $ cfn changeset create test
 template/sg.yaml created. changeset-test-template-sg-1497174211
 
-$ cfn changeset execute test-template-sg changeset-test-template-sg-1497174211
+$ cfn changeset execute changeset-test-template-sg-1497174211
 test-template-sg updated. changeset-test-template-sg-1497174211
 ```
