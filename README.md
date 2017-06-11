@@ -28,12 +28,12 @@ Tags:
 // first argument is stack group name
 // stack name is ${stack_group_name}-{template_dir}-{template_name} without file extension
 $ cfn stack create test
-template/vpc.yaml created.
-template/subnet.yaml created.
-template/sg.yaml created.
+template/vpc.yaml created. test-template-vpc
+template/subnet.yaml created. test-template-subnet
+template/sg.yaml created. test-template-sg
 
 $ cfn stack delete test
-template/sg.yaml deleted.
-template/subnet.yaml deleted.
-template/vpc.yaml deleted.
+template/sg.yaml deleted. test-template-sg
+template/subnet.yaml deleted. test-template-subnet
+template/vpc.yaml deleted. test-template-vpc
 ```
