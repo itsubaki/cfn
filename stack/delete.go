@@ -26,10 +26,10 @@ func Delete(c *cli.Context) {
 	client := cf.New(session.Must(session.NewSession()))
 	list := config.Template()
 	for i := len(list); i > 0; i-- {
-		tmpl := list[i-1].(string)
-		fmt.Print(tmpl)
+		tmplpath := list[i-1]
+		fmt.Print(tmplpath)
 
-		tmp := strings.Replace(tmpl, "/", "-", -1)
+		tmp := strings.Replace(tmplpath, "/", "-", -1)
 		suffix := strings.Replace(tmp, ".yaml", "", -1)
 		name := c.Args().Get(0) + "-" + suffix
 

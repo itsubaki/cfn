@@ -8,7 +8,8 @@ import (
 )
 
 type Config map[string]interface{}
-type TemplateList []interface{}
+type TemplateList []string
+type TagList []*cf.Tag
 
 func Read(path string) (Config, error) {
 	buf, err := ioutil.ReadFile(path)
@@ -35,11 +36,16 @@ func TemplateBody(path string) (string, error) {
 }
 
 func (c Config) Template() TemplateList {
-	return c["Templates"].([]interface{})
+	template := TemplateList{}
+	list := c["Templates"].([]interface{})
+	for i := 0; i < len(list); i++ {
+		template = append(template, list[i].(string))
+	}
+	return template
 }
 
-func (c Config) Tag() []*cf.Tag {
-	var tags []*cf.Tag
+func (c Config) Tag() TagList {
+	var tags TagList
 	for _, tmp := range c["Tags"].([]interface{}) {
 		for key, val := range tmp.(map[interface{}]interface{}) {
 			k := key.(string)

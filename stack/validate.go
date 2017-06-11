@@ -20,10 +20,10 @@ func Validate(c *cli.Context) {
 	client := cf.New(session.Must(session.NewSession()))
 	list := config.Template()
 	for i := 0; i < len(list); i++ {
-		tmpl := list[i].(string)
-		fmt.Print(tmpl)
+		tmplpath := list[i]
+		fmt.Print(tmplpath)
 
-		body, err := cfg.TemplateBody(tmpl)
+		body, err := cfg.TemplateBody(tmplpath)
 		if err != nil {
 			fmt.Println()
 			fmt.Println(err)

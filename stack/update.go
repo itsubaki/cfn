@@ -27,14 +27,14 @@ func Update(c *cli.Context) {
 
 	list := config.Template()
 	for i := 0; i < len(list); i++ {
-		tmpl := list[i].(string)
-		fmt.Print(tmpl)
+		tmplpath := list[i]
+		fmt.Print(tmplpath)
 
-		tmp := strings.Replace(tmpl, "/", "-", -1)
+		tmp := strings.Replace(tmplpath, "/", "-", -1)
 		suffix := strings.Replace(tmp, ".yaml", "", -1)
 		name := c.Args().Get(0) + "-" + suffix
 
-		body, err := cfg.TemplateBody(tmpl)
+		body, err := cfg.TemplateBody(tmplpath)
 		if err != nil {
 			fmt.Println()
 			fmt.Println(err)
