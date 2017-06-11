@@ -52,6 +52,15 @@ func (c Config) Template() TemplateList {
 	return template
 }
 
+func (c Config) TemplateReverse() TemplateList {
+	template := TemplateList{}
+	list := c.Template()
+	for i := 0; i < len(list); i++ {
+		template = append(template, list[len(list)-1-i])
+	}
+	return template
+}
+
 func (c Config) Tag() TagList {
 	var tags TagList
 	for _, tmp := range c["Tags"].([]interface{}) {

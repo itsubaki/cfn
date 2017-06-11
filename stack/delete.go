@@ -23,7 +23,7 @@ func Delete(c *cli.Context) {
 	}
 
 	client := cf.New(session.Must(session.NewSession()))
-	for _, tmplpath := range config.Template() {
+	for _, tmplpath := range config.TemplateReverse() {
 		fmt.Print(tmplpath)
 
 		name := cfg.StackName(c.Args().Get(0), tmplpath)
