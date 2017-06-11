@@ -56,19 +56,22 @@ func Create(c *cli.Context) {
 			StackName:     &name,
 		}
 		err = client.WaitUntilChangeSetCreateComplete(desc)
-		if err != nil {
-			input := &cf.DeleteChangeSetInput{
-				ChangeSetName: &changeSetName,
-				StackName:     &name,
-			}
-			if _, er := client.DeleteChangeSet(input); er != nil {
-				fmt.Println()
-				fmt.Println(er)
-			}
-			fmt.Println()
+		if err == nil {
+			fmt.Println(" created. " + *res.Id)
 			continue
 		}
 
-		fmt.Println(" created. " + *res.Id)
+		// Delete ChangeSet of Failed Status
+		input := &cf.DeleteChangeSetInput{
+			ChangeSetName: &changeSetName,
+			StackName:     &name,
+		}
+		_, err = client.DeleteChangeSet(input)
+		if err != nil {
+			fmt.Println()
+			fmt.Println(err)
+		}
+		fmt.Println()
+
 	}
 }
