@@ -35,6 +35,45 @@ template/sg.yaml     created. test-template-sg
 $ cfn changeset create test
 template/sg.yaml created. changeset-test-template-sg-1497174211
 
+$ cfn changeset describe changeset-test-template-sg-1497174211
+{
+  ChangeSetId: "arn:aws:cloudformation:ap-northeast-1:************:changeSet/changeset-test-template-sg-1497174211/********-****-****-****-************",
+  ChangeSetName: "changeset-test-template-sg-1497174211",
+  Changes: [{
+      ResourceChange: {
+        Action: "Modify",
+        Details: [{
+            ChangeSource: "DirectModification",
+            Evaluation: "Static",
+            Target: {
+              Attribute: "Properties",
+              Name: "SecurityGroupIngress",
+              RequiresRecreation: "Never"
+            }
+          }],
+        LogicalResourceId: "PublicSecurityGroup",
+        PhysicalResourceId: "sg-d3b57fb5",
+        Replacement: "False",
+        ResourceType: "AWS::EC2::SecurityGroup",
+        Scope: ["Properties"]
+      },
+      Type: "Resource"
+    }],
+  CreationTime: 2017-06-11 12:22:23.522 +0000 UTC,
+  ExecutionStatus: "AVAILABLE",
+  Parameters: [{
+      ParameterKey: "ProjectName",
+      ParameterValue: "test"
+    }],
+  StackId: "arn:aws:cloudformation:ap-northeast-1:************:stack/test-template-sg/********-****-****-****-************",
+  StackName: "test-template-sg",
+  Status: "CREATE_COMPLETE",
+  Tags: [{
+      Key: "ProjectName",
+      Value: "test"
+    }]
+}
+
 $ cfn changeset execute changeset-test-template-sg-1497174211
 test-template-sg updated. changeset-test-template-sg-1497174211
 ```

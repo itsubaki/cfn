@@ -69,7 +69,7 @@ func main() {
 	changeset := cli.Command{
 		Name:    "changeset",
 		Aliases: []string{"cs"},
-		Usage:   "Create, Execute, Delete Changeset",
+		Usage:   "Create, Execute, Delete, Describe Changeset",
 		Subcommands: []cli.Command{
 			{
 				Name:    "create",
@@ -90,6 +90,13 @@ func main() {
 				Action:  changeset.Delete,
 				Aliases: []string{"d"},
 				Usage:   "Deletes the specified change set",
+				Flags:   flags,
+			},
+			{
+				Name:    "describe",
+				Action:  changeset.Describe,
+				Aliases: []string{"desc"},
+				Usage:   "Returns the inputs for the change set and a list of changes that AWS CloudFormation will make if you execute the change set.",
 				Flags:   flags,
 			},
 		},
