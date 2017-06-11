@@ -13,7 +13,7 @@ import (
 
 func Delete(c *cli.Context) {
 	if len(c.Args()) < 1 {
-		fmt.Println("error: stack group name is null.")
+		fmt.Println("error: first argument(stack group name) is required")
 		os.Exit(1)
 	}
 
