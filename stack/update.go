@@ -25,7 +25,7 @@ func Update(c *cli.Context) {
 
 	client := cf.New(session.Must(session.NewSession()))
 
-	list := config["Templates"].([]interface{})
+	list := config.Template()
 	for i := 0; i < len(list); i++ {
 		tmpl := list[i].(string)
 		fmt.Print(tmpl)

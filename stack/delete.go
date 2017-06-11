@@ -24,7 +24,7 @@ func Delete(c *cli.Context) {
 	}
 
 	client := cf.New(session.Must(session.NewSession()))
-	list := config["Templates"].([]interface{})
+	list := config.Template()
 	for i := len(list); i > 0; i-- {
 		tmpl := list[i-1].(string)
 		fmt.Print(tmpl)

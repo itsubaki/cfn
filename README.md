@@ -22,8 +22,11 @@ Templates:
  - template/sg.yaml
 Parameters:
    - ProjectName: test
+Tags:
+   - ProjectName: test
 
 // first argument is stack group name
+// stack name is ${stack_group_name}-{template_dir}-{template_name} without file extension
 $ cfn stack create test
 template/vpc.yaml created.
 template/subnet.yaml created.

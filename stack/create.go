@@ -24,8 +24,9 @@ func Create(c *cli.Context) {
 	}
 
 	client := cf.New(session.Must(session.NewSession()))
+	list := config.Template()
+	tag := config.Tag()
 
-	list := config["Templates"].([]interface{})
 	for i := 0; i < len(list); i++ {
 		tmpl := list[i].(string)
 		fmt.Print(tmpl)
@@ -44,6 +45,7 @@ func Create(c *cli.Context) {
 		req := &cf.CreateStackInput{
 			StackName:    &name,
 			TemplateBody: &body,
+			Tags:         tag,
 		}
 
 		res, err := client.CreateStack(req)
