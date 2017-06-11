@@ -33,7 +33,9 @@ template/subnet.yaml created. test-template-subnet
 template/sg.yaml     created. test-template-sg
 
 $ cfn changeset create test
-template/sg.yaml created. changeset-test-template-sg-1497174211
+template/vpc.yaml    no update.
+template/subnet.yaml no update.
+template/sg.yaml     created. changeset-test-template-sg-1497174211
 
 $ cfn changeset describe changeset-test-template-sg-1497174211
 {

@@ -71,7 +71,8 @@ func Create(c *cli.Context) {
 			fmt.Println()
 			fmt.Println(err)
 		}
-		fmt.Println()
+
+		fmt.Println(" no update.")
 
 	}
 }
