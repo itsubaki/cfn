@@ -2,6 +2,7 @@ package config
 
 import (
 	"io/ioutil"
+	"strings"
 
 	cf "github.com/aws/aws-sdk-go/service/cloudformation"
 	yaml "gopkg.in/yaml.v2"
@@ -33,6 +34,13 @@ func TemplateBody(path string) (string, error) {
 	}
 
 	return string(buf), nil
+}
+
+func StackName(arg, tmplpath string) string {
+	tmp := strings.Replace(tmplpath, "/", "-", -1)
+	suffix := strings.Replace(tmp, ".yaml", "", -1)
+	name := arg + "-" + suffix
+	return name
 }
 
 func (c Config) Template() TemplateList {

@@ -3,7 +3,6 @@ package stack
 import (
 	"fmt"
 	"os"
-	"strings"
 
 	"github.com/aws/aws-sdk-go/aws/session"
 	cf "github.com/aws/aws-sdk-go/service/cloudformation"
@@ -30,10 +29,7 @@ func Update(c *cli.Context) {
 		tmplpath := list[i]
 		fmt.Print(tmplpath)
 
-		tmp := strings.Replace(tmplpath, "/", "-", -1)
-		suffix := strings.Replace(tmp, ".yaml", "", -1)
-		name := c.Args().Get(0) + "-" + suffix
-
+		name := cfg.StackName(c.Args().Get(0), tmplpath)
 		body, err := cfg.TemplateBody(tmplpath)
 		if err != nil {
 			fmt.Println()
