@@ -33,7 +33,7 @@ func main() {
 	stack := cli.Command{
 		Name:    "stack",
 		Aliases: []string{"s"},
-		Usage:   "Create, Update, Delete, Describe Stack",
+		Usage:   "Create, Update, Delete Stack",
 		Subcommands: []cli.Command{
 			{
 				Name:    "create",
@@ -57,10 +57,10 @@ func main() {
 				Flags:   flags,
 			},
 			{
-				Name:    "describe",
-				Action:  stack.Describe,
-				Aliases: []string{"desc"},
-				Usage:   "Returns the description for the specified stack",
+				Name:    "estimate",
+				Action:  stack.Estimate,
+				Aliases: []string{"e"},
+				Usage:   "Returns the estimated monthly cost of a template",
 				Flags:   flags,
 			},
 		},
@@ -69,7 +69,7 @@ func main() {
 	changeset := cli.Command{
 		Name:    "changeset",
 		Aliases: []string{"cs"},
-		Usage:   "Create, Execute, Delete, Describe Changeset",
+		Usage:   "Create, Execute, Delete Changeset",
 		Subcommands: []cli.Command{
 			{
 				Name:    "create",
@@ -90,13 +90,6 @@ func main() {
 				Action:  changeset.Delete,
 				Aliases: []string{"d"},
 				Usage:   "Deletes the specified change set",
-				Flags:   flags,
-			},
-			{
-				Name:    "describe",
-				Action:  changeset.Describe,
-				Aliases: []string{"desc"},
-				Usage:   "Returns the inputs for the change set and a list of changes that AWS CloudFormation will make if you execute the change set",
 				Flags:   flags,
 			},
 		},

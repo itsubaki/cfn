@@ -30,8 +30,8 @@ func Validate(c *cli.Context) {
 			continue
 		}
 
-		input := &cf.ValidateTemplateInput{TemplateBody: &body}
-		_, err = client.ValidateTemplate(input)
+		req := &cf.ValidateTemplateInput{TemplateBody: &body}
+		_, err = client.ValidateTemplate(req)
 		if err != nil {
 			fmt.Println()
 			fmt.Println(err)

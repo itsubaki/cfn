@@ -41,12 +41,12 @@ func Create(c *cli.Context) {
 			continue
 		}
 
-		create := &cf.CreateStackInput{
+		req := &cf.CreateStackInput{
 			StackName:    &name,
 			TemplateBody: &body,
 		}
 
-		res, err := client.CreateStack(create)
+		res, err := client.CreateStack(req)
 		if err != nil {
 			fmt.Println()
 			fmt.Println(err)
