@@ -37,10 +37,12 @@ func Create(c *cli.Context) {
 		}
 
 		changeSetName := "changeset-" + name + "-" + strconv.FormatInt(time.Now().Unix(), 10)
+		iam := "CAPABILITY_IAM"
 		req := &cf.CreateChangeSetInput{
 			ChangeSetName: &changeSetName,
 			StackName:     &name,
 			TemplateBody:  &body,
+			Capabilities:  []*string{&iam},
 			Tags:          config.Tag(),
 		}
 

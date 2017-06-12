@@ -34,9 +34,11 @@ func Create(c *cli.Context) {
 			continue
 		}
 
+		iam := "CAPABILITY_IAM"
 		req := &cf.CreateStackInput{
 			StackName:    &name,
 			TemplateBody: &body,
+			Capabilities: []*string{&iam},
 			Tags:         config.Tag(),
 		}
 
