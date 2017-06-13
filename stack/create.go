@@ -26,7 +26,8 @@ func Create(c *cli.Context) {
 	for _, tmplpath := range config.Template() {
 		fmt.Print(tmplpath)
 
-		name := cfg.StackName(c.Args().Get(0), tmplpath)
+		group := c.Args().Get(0)
+		name := cfg.StackName(group, tmplpath)
 		body, err := cfg.TemplateBody(tmplpath)
 		if err != nil {
 			fmt.Println()
@@ -34,12 +35,16 @@ func Create(c *cli.Context) {
 			continue
 		}
 
+		key := "StackGroupName"
+		tags := append(config.Tag(), &cf.Tag{Key: &key, Value: &group})
+
 		iam := "CAPABILITY_IAM"
+		niam := "CAPABILITY_NAMED_IAM"
 		req := &cf.CreateStackInput{
 			StackName:    &name,
 			TemplateBody: &body,
-			Capabilities: []*string{&iam},
-			Tags:         config.Tag(),
+			Capabilities: []*string{&iam, &niam},
+			Tags:         tags,
 		}
 
 		res, err := client.CreateStack(req)

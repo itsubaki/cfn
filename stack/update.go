@@ -35,10 +35,11 @@ func Update(c *cli.Context) {
 		}
 
 		iam := "CAPABILITY_IAM"
+		niam := "CAPABILITY_NAMED_IAM"
 		create := &cf.UpdateStackInput{
 			StackName:    &name,
 			TemplateBody: &body,
-			Capabilities: []*string{&iam},
+			Capabilities: []*string{&iam, &niam},
 		}
 
 		res, err := client.UpdateStack(create)
