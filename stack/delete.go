@@ -12,7 +12,7 @@ import (
 
 func Delete(c *cli.Context) {
 	if len(c.Args()) < 1 {
-		fmt.Println("error: first argument(stack group name) is required")
+		fmt.Println("error: first argument(stack group) is required")
 		os.Exit(1)
 	}
 
@@ -23,16 +23,17 @@ func Delete(c *cli.Context) {
 	}
 
 	client := cf.New(session.Must(session.NewSession()))
-	for _, tmplpath := range config.TemplateReverse() {
-		fmt.Print(tmplpath)
+	for _, template := range config.Reverse() {
+		group := c.Args().Get(0)
+		name := cfg.StackName(group, template.Name)
+		fmt.Print(name)
 
-		name := cfg.StackName(c.Args().Get(0), tmplpath)
 		req := &cf.DeleteStackInput{StackName: &name}
 		_, err := client.DeleteStack(req)
 		if err != nil {
 			fmt.Println()
 			fmt.Println(err)
-			continue
+			break
 		}
 
 		desc := &cf.DescribeStacksInput{StackName: &name}
@@ -40,7 +41,7 @@ func Delete(c *cli.Context) {
 		if err != nil {
 			fmt.Println()
 			fmt.Println(err)
-			continue
+			break
 		}
 
 		fmt.Println(" deleted. " + name)

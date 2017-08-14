@@ -12,7 +12,7 @@ import (
 
 func Create(c *cli.Context) {
 	if len(c.Args()) < 1 {
-		fmt.Println("error: first argument(stack group name) is required")
+		fmt.Println("error: first argument(stack group) is required")
 		os.Exit(1)
 	}
 
@@ -23,20 +23,17 @@ func Create(c *cli.Context) {
 	}
 
 	client := cf.New(session.Must(session.NewSession()))
-	for _, tmplpath := range config.Template() {
-		fmt.Print(tmplpath)
-
+	for _, template := range config.Resources {
 		group := c.Args().Get(0)
-		name := cfg.StackName(group, tmplpath)
-		body, err := cfg.TemplateBody(tmplpath)
+		name := cfg.StackName(group, template.Name)
+		fmt.Print(name)
+
+		body, err := template.Body()
 		if err != nil {
 			fmt.Println()
 			fmt.Println(err)
-			continue
+			break
 		}
-
-		key := "StackGroupName"
-		tags := append(config.Tag(), &cf.Tag{Key: &key, Value: &group})
 
 		iam := "CAPABILITY_IAM"
 		niam := "CAPABILITY_NAMED_IAM"
@@ -44,14 +41,15 @@ func Create(c *cli.Context) {
 			StackName:    &name,
 			TemplateBody: &body,
 			Capabilities: []*string{&iam, &niam},
-			Tags:         tags,
+			Parameters:   template.Parameter(),
+			Tags:         config.Tag(),
 		}
 
 		res, err := client.CreateStack(req)
 		if err != nil {
 			fmt.Println()
 			fmt.Println(err)
-			continue
+			break
 		}
 
 		desc := &cf.DescribeStacksInput{StackName: &name}
@@ -59,7 +57,7 @@ func Create(c *cli.Context) {
 		if err != nil {
 			fmt.Println()
 			fmt.Println(err)
-			continue
+			break
 		}
 
 		fmt.Println(" created. " + *res.StackId)

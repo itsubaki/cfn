@@ -9,24 +9,26 @@
 $ go get github.com/itsubaki/cfn
 ```
 
-
 ## Example
 
 ```console
 $ ls
 cfn.yaml	template
 $ cat cfn.yaml
-Templates:
- - template/vpc.yaml
- - template/subnet.yaml
- - template/sg.yaml
-Parameters:
-   - ProjectName: test
-Tags:
-   - ProjectName: test
+resources:
+  - name: backend
+    type: template/backend.yml
+    parameters:
+      - name: ProjectName
+        value: test
+      - name: Environment
+        value: develop
+tags:
+  - name: StackGroup
+    value: test
 
 // first argument is stack group name
-// stack name is ${stack_group_name}-{template_dir}-{template_name} without file extension
+// stack name is ${stack_group_name}-{template_name} without file extension
 $ cfn stack create test
 template/vpc.yaml    created. test-template-vpc
 template/subnet.yaml created. test-template-subnet

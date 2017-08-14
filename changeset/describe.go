@@ -12,7 +12,7 @@ import (
 
 func Describe(c *cli.Context) {
 	if len(c.Args()) < 1 {
-		fmt.Println("error: first argument(change-set name) is required")
+		fmt.Println("error: first argument(change-set) is required")
 		os.Exit(1)
 	}
 

@@ -12,7 +12,7 @@ import (
 
 func Update(c *cli.Context) {
 	if len(c.Args()) < 1 {
-		fmt.Println("error: first argument(stack group name) is required")
+		fmt.Println("error: first argument(stack group) is required")
 		os.Exit(1)
 	}
 
@@ -23,15 +23,16 @@ func Update(c *cli.Context) {
 	}
 
 	client := cf.New(session.Must(session.NewSession()))
-	for _, tmplpath := range config.Template() {
-		fmt.Print(tmplpath)
+	for _, template := range config.Resources {
+		group := c.Args().Get(0)
+		name := cfg.StackName(group, template.Name)
+		fmt.Print(name)
 
-		name := cfg.StackName(c.Args().Get(0), tmplpath)
-		body, err := cfg.TemplateBody(tmplpath)
+		body, err := template.Body()
 		if err != nil {
 			fmt.Println()
 			fmt.Println(err)
-			continue
+			break
 		}
 
 		iam := "CAPABILITY_IAM"
@@ -40,13 +41,15 @@ func Update(c *cli.Context) {
 			StackName:    &name,
 			TemplateBody: &body,
 			Capabilities: []*string{&iam, &niam},
+			Parameters:   template.Parameter(),
+			Tags:         config.Tag(),
 		}
 
 		res, err := client.UpdateStack(create)
 		if err != nil {
 			fmt.Println()
 			fmt.Println(err)
-			continue
+			break
 		}
 
 		desc := &cf.DescribeStacksInput{StackName: &name}
@@ -54,7 +57,7 @@ func Update(c *cli.Context) {
 		if err != nil {
 			fmt.Println()
 			fmt.Println(err)
-			continue
+			break
 		}
 
 		fmt.Println(" updated. " + *res.StackId)

@@ -18,14 +18,14 @@ func Validate(c *cli.Context) {
 	}
 
 	client := cf.New(session.Must(session.NewSession()))
-	for _, tmplpath := range config.Template() {
-		fmt.Print(tmplpath)
+	for _, template := range config.Resources {
+		fmt.Print(template.Name)
 
-		body, err := cfg.TemplateBody(tmplpath)
+		body, err := template.Body()
 		if err != nil {
 			fmt.Println()
 			fmt.Println(err)
-			continue
+			break
 		}
 
 		req := &cf.ValidateTemplateInput{TemplateBody: &body}
@@ -33,7 +33,7 @@ func Validate(c *cli.Context) {
 		if err != nil {
 			fmt.Println()
 			fmt.Println(err)
-			continue
+			break
 		}
 
 		fmt.Println(" ok.")

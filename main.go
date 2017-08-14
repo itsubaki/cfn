@@ -30,6 +30,14 @@ func main() {
 		Action:  stack.Validate,
 	}
 
+	estimate := cli.Command{
+		Name:    "estimate",
+		Action:  stack.Estimate,
+		Aliases: []string{"e"},
+		Usage:   "Returns the estimated monthly cost of a template",
+		Flags:   flags,
+	}
+
 	stack := cli.Command{
 		Name:    "stack",
 		Aliases: []string{"s"},
@@ -54,13 +62,6 @@ func main() {
 				Action:  stack.Delete,
 				Aliases: []string{"d"},
 				Usage:   "Deletes a specified stack",
-				Flags:   flags,
-			},
-			{
-				Name:    "estimate",
-				Action:  stack.Estimate,
-				Aliases: []string{"e"},
-				Usage:   "Returns the estimated monthly cost of a template",
 				Flags:   flags,
 			},
 		},
@@ -104,6 +105,7 @@ func main() {
 
 	app.Commands = []cli.Command{
 		validate,
+		estimate,
 		stack,
 		changeset,
 	}

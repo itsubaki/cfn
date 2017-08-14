@@ -14,7 +14,7 @@ import (
 
 func Create(c *cli.Context) {
 	if len(c.Args()) < 1 {
-		fmt.Println("error: first argument(stack group name) is required")
+		fmt.Println("error: first argument(stack group) is required")
 		os.Exit(1)
 	}
 
@@ -25,15 +25,15 @@ func Create(c *cli.Context) {
 	}
 
 	client := cf.New(session.Must(session.NewSession()))
-	for _, tmplpath := range config.Template() {
-		fmt.Print(tmplpath)
+	for _, template := range config.Resources {
+		fmt.Print(template.Name)
 
-		name := cfg.StackName(c.Args().Get(0), tmplpath)
-		body, err := cfg.TemplateBody(tmplpath)
+		name := cfg.StackName(c.Args().Get(0), template.Name)
+		body, err := template.Body()
 		if err != nil {
 			fmt.Println()
 			fmt.Println(err)
-			continue
+			break
 		}
 
 		changeSetName := "changeset-" + name + "-" + strconv.FormatInt(time.Now().Unix(), 10)
@@ -44,6 +44,7 @@ func Create(c *cli.Context) {
 			StackName:     &name,
 			TemplateBody:  &body,
 			Capabilities:  []*string{&iam, &niam},
+			Parameters:    template.Parameter(),
 			Tags:          config.Tag(),
 		}
 
@@ -51,7 +52,7 @@ func Create(c *cli.Context) {
 		if err != nil {
 			fmt.Println()
 			fmt.Println(err)
-			continue
+			break
 		}
 
 		desc := &cf.DescribeChangeSetInput{
@@ -61,7 +62,7 @@ func Create(c *cli.Context) {
 		err = client.WaitUntilChangeSetCreateComplete(desc)
 		if err == nil {
 			fmt.Println(" created. " + *res.Id)
-			continue
+			break
 		}
 
 		// Delete ChangeSet of Failed Status
@@ -73,9 +74,9 @@ func Create(c *cli.Context) {
 		if err != nil {
 			fmt.Println()
 			fmt.Println(err)
+			break
 		}
 
 		fmt.Println(" no update.")
-
 	}
 }
