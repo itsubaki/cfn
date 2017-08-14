@@ -16,33 +16,37 @@ $ ls
 cfn.yaml	template
 $ cat cfn.yaml
 resources:
-  - name: backend
-    type: template/backend.yml
+  - name: vpc
+    type: template/vpc.yml
     parameters:
       - name: ProjectName
         value: test
       - name: Environment
         value: develop
+  - name: subnet
+    type: template/subnet.yml
+  - name: sg
+    type: tempalte/sg.yml
+
 tags:
   - name: StackGroup
     value: test
 
-// first argument is stack group name
-// stack name is ${stack_group_name}-{template_name} without file extension
+// stack name is ${stack_group_name}-{resource.name}
 $ cfn stack create test
-template/vpc.yaml    created. test-template-vpc
-template/subnet.yaml created. test-template-subnet
-template/sg.yaml     created. test-template-sg
+template/vpc.yaml    created. test-vpc
+template/subnet.yaml created. test-subnet
+template/sg.yaml     created. test-sg
 
 $ cfn changeset create test
 template/vpc.yaml    no update.
 template/subnet.yaml no update.
-template/sg.yaml     created. changeset-test-template-sg-1497174211
+template/sg.yaml     created. changeset-test-sg-1497174211
 
-$ cfn changeset describe changeset-test-template-sg-1497174211
+$ cfn changeset describe changeset-test-sg-1497174211
 {
-  ChangeSetId: "arn:aws:cloudformation:ap-northeast-1:************:changeSet/changeset-test-template-sg-1497174211/********-****-****-****-************",
-  ChangeSetName: "changeset-test-template-sg-1497174211",
+  ChangeSetId: "arn:aws:cloudformation:ap-northeast-1:************:changeSet/changeset-test-sg-1497174211/********-****-****-****-************",
+  ChangeSetName: "changeset-test-sg-1497174211",
   Changes: [{
       ResourceChange: {
         Action: "Modify",
@@ -69,8 +73,8 @@ $ cfn changeset describe changeset-test-template-sg-1497174211
       ParameterKey: "ProjectName",
       ParameterValue: "test"
     }],
-  StackId: "arn:aws:cloudformation:ap-northeast-1:************:stack/test-template-sg/********-****-****-****-************",
-  StackName: "test-template-sg",
+  StackId: "arn:aws:cloudformation:ap-northeast-1:************:stack/test-sg/********-****-****-****-************",
+  StackName: "test-sg",
   Status: "CREATE_COMPLETE",
   Tags: [{
       Key: "ProjectName",
@@ -78,6 +82,6 @@ $ cfn changeset describe changeset-test-template-sg-1497174211
     }]
 }
 
-$ cfn changeset execute changeset-test-template-sg-1497174211
-test-template-sg updated. changeset-test-template-sg-1497174211
+$ cfn changeset execute changeset-test-sg-1497174211
+test-sg updated. changeset-test-sg-1497174211
 ```
