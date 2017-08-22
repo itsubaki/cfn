@@ -18,7 +18,7 @@ $ cat cfn.yaml
 resources:
   - name: vpc
     type: template/vpc.yml
-    parameters:
+    properties:
       - name: ProjectName
         value: test
       - name: Environment

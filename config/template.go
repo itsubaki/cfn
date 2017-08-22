@@ -14,9 +14,9 @@ type Config struct {
 }
 
 type Resource struct {
-	Name       string      `yaml:"name"`
-	Type       string      `yaml:"type"`
-	Parameters []Parameter `yaml:"parameters"`
+	Name       string     `yaml:"name"`
+	Type       string     `yaml:"type"`
+	Properties []Property `yaml:"properties"`
 }
 
 type Tag struct {
@@ -24,7 +24,7 @@ type Tag struct {
 	Value string `yaml:"value"`
 }
 
-type Parameter struct {
+type Property struct {
 	Name  string `yaml:"name"`
 	Value string `yaml:"value"`
 }
@@ -79,7 +79,7 @@ func (t *Resource) Body() (string, error) {
 
 func (t *Resource) Parameter() []*cf.Parameter {
 	var parameters []*cf.Parameter
-	for _, p := range t.Parameters {
+	for _, p := range t.Properties {
 		k := p.Name
 		v := p.Value
 		parameters = append(parameters, &cf.Parameter{ParameterKey: &k, ParameterValue: &v})
