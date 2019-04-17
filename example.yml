@@ -1,6 +1,16 @@
 resources:
   - name: vpc
     type: template/vpc.yml
+    region: us-east-1
+    properties:
+      - name: ProjectName
+        value: test
+      - name: Environment
+        value: develop
+
+  - name: vpc
+    type: template/vpc.yml
+    region: ap-northeast-1
     properties:
       - name: ProjectName
         value: test

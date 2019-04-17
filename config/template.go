@@ -15,6 +15,7 @@ type Config struct {
 
 type Resource struct {
 	Name       string     `yaml:"name"`
+	Region     string     `yaml:"region"`
 	Type       string     `yaml:"type"`
 	Properties []Property `yaml:"properties"`
 }

@@ -5,8 +5,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/aws/aws-sdk-go/aws/session"
 	cf "github.com/aws/aws-sdk-go/service/cloudformation"
+	ses "github.com/itsubaki/cfn/session"
 	cli "gopkg.in/urfave/cli.v1"
 )
 
@@ -26,8 +26,7 @@ func Delete(c *cli.Context) {
 		ChangeSetName: &changeSetName,
 	}
 
-	opts := session.Options{SharedConfigState: session.SharedConfigEnable}
-	client := cf.New(session.Must(session.NewSessionWithOptions(opts)))
+	client := cf.New(ses.New())
 	_, err := client.DeleteChangeSet(req)
 	if err != nil {
 		fmt.Println()

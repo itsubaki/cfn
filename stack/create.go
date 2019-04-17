@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/aws/aws-sdk-go/aws/session"
 	cf "github.com/aws/aws-sdk-go/service/cloudformation"
 	cfg "github.com/itsubaki/cfn/config"
+	ses "github.com/itsubaki/cfn/session"
 	cli "gopkg.in/urfave/cli.v1"
 )
 
@@ -22,8 +22,6 @@ func Create(c *cli.Context) {
 		return
 	}
 
-	opts := session.Options{SharedConfigState: session.SharedConfigEnable}
-	client := cf.New(session.Must(session.NewSessionWithOptions(opts)))
 	for _, template := range config.Resources {
 		group := c.Args().Get(0)
 		name := cfg.StackName(group, template.Name)
@@ -46,6 +44,7 @@ func Create(c *cli.Context) {
 			Tags:         config.Tag(),
 		}
 
+		client := cf.New(ses.New(template.Region))
 		res, err := client.CreateStack(req)
 		if err != nil {
 			fmt.Println()
