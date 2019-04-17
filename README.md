@@ -13,8 +13,8 @@ $ go get github.com/itsubaki/cfn
 
 ```console
 $ ls
-cfn.yaml	template
-$ cat cfn.yaml
+example.yaml	template
+$ cat example.yaml
 resources:
   - name: vpc
     type: template/vpc.yml

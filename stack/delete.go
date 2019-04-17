@@ -16,13 +16,14 @@ func Delete(c *cli.Context) {
 		os.Exit(1)
 	}
 
-	config, err := cfg.Read(c.String("config"))
+	config, err := cfg.Read(c.String("file"))
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("read file: %v", err)
 		return
 	}
 
-	client := cf.New(session.Must(session.NewSession()))
+	opts := session.Options{SharedConfigState: session.SharedConfigEnable}
+	client := cf.New(session.Must(session.NewSessionWithOptions(opts)))
 	for _, template := range config.Reverse() {
 		group := c.Args().Get(0)
 		name := cfg.StackName(group, template.Name)

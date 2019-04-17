@@ -25,7 +25,8 @@ func Describe(c *cli.Context) {
 		ChangeSetName: &changeSetName,
 	}
 
-	client := cf.New(session.Must(session.NewSession()))
+	opts := session.Options{SharedConfigState: session.SharedConfigEnable}
+	client := cf.New(session.Must(session.NewSessionWithOptions(opts)))
 	out, err := client.DescribeChangeSet(req)
 	if err != nil {
 		fmt.Println()

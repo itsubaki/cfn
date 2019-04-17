@@ -1,0 +1,71 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description:
+  AWS VPC Resource
+
+Parameters:
+  ProjectName:
+    Description: ""
+    Type: String
+    Default: example
+  Environment:
+    Description: ""
+    Type: String
+    Default: dev
+  CidrBlock:
+    Description: ""
+    Type: String
+    Default: 10.0.0.0/16
+  EnableDnsSupport:
+    Description: ""
+    Type: String
+    Default: true
+    AllowedValues:
+      - true
+      - false
+  EnableDnsHostnames:
+    Description: ""
+    Type: String
+    Default: true
+    AllowedValues:
+      - true
+      - false
+  InstanceTenancy:
+    Description: ""
+    Type: String
+    Default: default
+    AllowedValues:
+      - default
+      - dedicated
+
+Outputs:
+  ProjectName:
+    Value: !Ref ProjectName
+  Environment:
+    Value: !Ref Environment
+  VPC:
+    Value: !Ref VPC
+
+Resources:
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock:          !Ref CidrBlock
+      EnableDnsSupport:   !Ref EnableDnsSupport
+      EnableDnsHostnames: !Ref EnableDnsHostnames
+      InstanceTenancy:    !Ref InstanceTenancy
+      Tags:
+        - Key: Name
+          Value: !Sub "${ProjectName}.${Environment}.vpc"
+        - Key: ProjectName
+          Value: !Ref ProjectName
+        - Key: Environment
+          Value: !Ref Environment
+
+  SSMVPC:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Description: "VPC"
+      Name:  !Sub "/${ProjectName}/${Environment}/VPCID"
+      Value: !Ref VPC
+      Type: String

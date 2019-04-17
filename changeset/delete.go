@@ -26,7 +26,8 @@ func Delete(c *cli.Context) {
 		ChangeSetName: &changeSetName,
 	}
 
-	client := cf.New(session.Must(session.NewSession()))
+	opts := session.Options{SharedConfigState: session.SharedConfigEnable}
+	client := cf.New(session.Must(session.NewSessionWithOptions(opts)))
 	_, err := client.DeleteChangeSet(req)
 	if err != nil {
 		fmt.Println()
