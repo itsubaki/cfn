@@ -22,7 +22,6 @@ func Update(c *cli.Context) {
 		return
 	}
 
-	client := cf.New(ses.New())
 	for _, template := range config.Resources {
 		group := c.Args().Get(0)
 		name := cfg.StackName(group, template.Name)
@@ -45,6 +44,7 @@ func Update(c *cli.Context) {
 			Tags:         config.Tag(),
 		}
 
+		client := cf.New(ses.New(template.Region))
 		res, err := client.UpdateStack(create)
 		if err != nil {
 			fmt.Println()

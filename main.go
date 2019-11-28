@@ -13,12 +13,12 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "cfn"
 	app.Usage = ""
-	app.Version = "0.0.1"
+	app.Version = "0.0.2"
 
 	flags := []cli.Flag{
 		cli.StringFlag{
 			Name:  "file, f",
-			Value: "cfn.yaml",
+			Value: "resources.yaml",
 		},
 	}
 
