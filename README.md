@@ -1,6 +1,6 @@
 # cfn
 
- - cfn is command line tool for AWS CloudFormation.
+ - cfn is a command line tool for AWS CloudFormation.
  - cfn execute multiple template at once.
 
 ## Install
