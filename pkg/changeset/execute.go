@@ -5,8 +5,8 @@ import (
 	"os"
 	"strings"
 
-	cf "github.com/aws/aws-sdk-go/service/cloudformation"
-	ses "github.com/itsubaki/cfn/session"
+	"github.com/aws/aws-sdk-go/service/cloudformation"
+	"github.com/itsubaki/cfn/pkg/session"
 	cli "gopkg.in/urfave/cli.v1"
 )
 
@@ -21,12 +21,12 @@ func Execute(c *cli.Context) {
 	stackName := tmp[:strings.LastIndex(tmp, "-")]
 	fmt.Print(stackName)
 
-	req := &cf.ExecuteChangeSetInput{
+	req := &cloudformation.ExecuteChangeSetInput{
 		StackName:     &stackName,
 		ChangeSetName: &changeSetName,
 	}
 
-	client := cf.New(ses.New())
+	client := cloudformation.New(session.New())
 	_, err := client.ExecuteChangeSet(req)
 	if err != nil {
 		fmt.Println()

@@ -6,9 +6,9 @@ import (
 	"strconv"
 	"time"
 
-	cf "github.com/aws/aws-sdk-go/service/cloudformation"
-	cfg "github.com/itsubaki/cfn/config"
-	ses "github.com/itsubaki/cfn/session"
+	"github.com/aws/aws-sdk-go/service/cloudformation"
+	"github.com/itsubaki/cfn/pkg/config"
+	"github.com/itsubaki/cfn/pkg/session"
 	cli "gopkg.in/urfave/cli.v1"
 )
 
@@ -18,17 +18,17 @@ func Create(c *cli.Context) {
 		os.Exit(1)
 	}
 
-	config, err := cfg.Read(c.String("file"))
+	conf, err := config.Read(c.String("file"))
 	if err != nil {
 		fmt.Printf("read file: %v\n", err)
 		return
 	}
 
-	client := cf.New(ses.New())
-	for _, template := range config.Resources {
+	client := cloudformation.New(session.New())
+	for _, template := range conf.Resources {
 		fmt.Print(template.Name)
 
-		name := cfg.StackName(c.Args().Get(0), template.Name)
+		name := config.StackName(c.Args().Get(0), template.Name)
 		body, err := template.Body()
 		if err != nil {
 			fmt.Println()
@@ -39,13 +39,13 @@ func Create(c *cli.Context) {
 		changeSetName := "changeset-" + name + "-" + strconv.FormatInt(time.Now().Unix(), 10)
 		iam := "CAPABILITY_IAM"
 		niam := "CAPABILITY_NAMED_IAM"
-		req := &cf.CreateChangeSetInput{
+		req := &cloudformation.CreateChangeSetInput{
 			ChangeSetName: &changeSetName,
 			StackName:     &name,
 			TemplateBody:  &body,
 			Capabilities:  []*string{&iam, &niam},
 			Parameters:    template.Parameter(),
-			Tags:          config.Tag(),
+			Tags:          conf.Tag(),
 		}
 
 		res, err := client.CreateChangeSet(req)
@@ -55,7 +55,7 @@ func Create(c *cli.Context) {
 			break
 		}
 
-		desc := &cf.DescribeChangeSetInput{
+		desc := &cloudformation.DescribeChangeSetInput{
 			ChangeSetName: &changeSetName,
 			StackName:     &name,
 		}
@@ -66,7 +66,7 @@ func Create(c *cli.Context) {
 		}
 
 		// Delete ChangeSet of Failed Status
-		input := &cf.DeleteChangeSetInput{
+		input := &cloudformation.DeleteChangeSetInput{
 			ChangeSetName: &changeSetName,
 			StackName:     &name,
 		}

@@ -3,9 +3,8 @@ package main
 import (
 	"os"
 
-	"github.com/itsubaki/cfn/changeset"
-	"github.com/itsubaki/cfn/stack"
-
+	"github.com/itsubaki/cfn/pkg/changeset"
+	"github.com/itsubaki/cfn/pkg/stack"
 	cli "gopkg.in/urfave/cli.v1"
 )
 

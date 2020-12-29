@@ -4,7 +4,7 @@ import (
 	"io/ioutil"
 	"strings"
 
-	cf "github.com/aws/aws-sdk-go/service/cloudformation"
+	"github.com/aws/aws-sdk-go/service/cloudformation"
 	yaml "gopkg.in/yaml.v2"
 )
 
@@ -51,12 +51,12 @@ func StackName(arg, name string) string {
 	return arg + "-" + suffix
 }
 
-func (c *Config) Tag() []*cf.Tag {
-	var tags []*cf.Tag
+func (c *Config) Tag() []*cloudformation.Tag {
+	var tags []*cloudformation.Tag
 	for _, tag := range c.Tags {
 		k := tag.Name
 		v := tag.Value
-		tags = append(tags, &cf.Tag{Key: &k, Value: &v})
+		tags = append(tags, &cloudformation.Tag{Key: &k, Value: &v})
 	}
 	return tags
 }
@@ -78,12 +78,12 @@ func (t *Resource) Body() (string, error) {
 	return string(buf), nil
 }
 
-func (t *Resource) Parameter() []*cf.Parameter {
-	var parameters []*cf.Parameter
+func (t *Resource) Parameter() []*cloudformation.Parameter {
+	var parameters []*cloudformation.Parameter
 	for _, p := range t.Properties {
 		k := p.Name
 		v := p.Value
-		parameters = append(parameters, &cf.Parameter{ParameterKey: &k, ParameterValue: &v})
+		parameters = append(parameters, &cloudformation.Parameter{ParameterKey: &k, ParameterValue: &v})
 	}
 	return parameters
 }

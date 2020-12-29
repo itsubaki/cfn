@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"os"
 
-	cf "github.com/aws/aws-sdk-go/service/cloudformation"
-	cfg "github.com/itsubaki/cfn/config"
-	ses "github.com/itsubaki/cfn/session"
+	"github.com/aws/aws-sdk-go/service/cloudformation"
+	"github.com/itsubaki/cfn/pkg/config"
+	"github.com/itsubaki/cfn/pkg/session"
 	cli "gopkg.in/urfave/cli.v1"
 )
 
@@ -16,19 +16,19 @@ func Delete(c *cli.Context) {
 		os.Exit(1)
 	}
 
-	config, err := cfg.Read(c.String("file"))
+	conf, err := config.Read(c.String("file"))
 	if err != nil {
 		fmt.Printf("read file: %v\n", err)
 		return
 	}
 
-	for _, template := range config.Reverse() {
+	for _, template := range conf.Reverse() {
 		group := c.Args().Get(0)
-		name := cfg.StackName(group, template.Name)
+		name := config.StackName(group, template.Name)
 		fmt.Print(name)
 
-		client := cf.New(ses.New(template.Region))
-		req := &cf.DeleteStackInput{StackName: &name}
+		client := cloudformation.New(session.New(template.Region))
+		req := &cloudformation.DeleteStackInput{StackName: &name}
 		_, err := client.DeleteStack(req)
 		if err != nil {
 			fmt.Println()
@@ -36,7 +36,7 @@ func Delete(c *cli.Context) {
 			break
 		}
 
-		desc := &cf.DescribeStacksInput{StackName: &name}
+		desc := &cloudformation.DescribeStacksInput{StackName: &name}
 		err = client.WaitUntilStackDeleteComplete(desc)
 		if err != nil {
 			fmt.Println()

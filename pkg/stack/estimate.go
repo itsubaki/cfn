@@ -3,21 +3,21 @@ package stack
 import (
 	"fmt"
 
-	cf "github.com/aws/aws-sdk-go/service/cloudformation"
-	cfg "github.com/itsubaki/cfn/config"
-	ses "github.com/itsubaki/cfn/session"
+	"github.com/aws/aws-sdk-go/service/cloudformation"
+	"github.com/itsubaki/cfn/pkg/config"
+	"github.com/itsubaki/cfn/pkg/session"
 	cli "gopkg.in/urfave/cli.v1"
 )
 
 func Estimate(c *cli.Context) {
-	config, err := cfg.Read(c.String("file"))
+	conf, err := config.Read(c.String("file"))
 	if err != nil {
 		fmt.Printf("read file: %v\n", err)
 		return
 	}
 
-	client := cf.New(ses.New())
-	for _, template := range config.Resources {
+	client := cloudformation.New(session.New())
+	for _, template := range conf.Resources {
 		fmt.Print(template.Name)
 
 		body, err := template.Body()
@@ -27,7 +27,7 @@ func Estimate(c *cli.Context) {
 			break
 		}
 
-		req := &cf.EstimateTemplateCostInput{TemplateBody: &body}
+		req := &cloudformation.EstimateTemplateCostInput{TemplateBody: &body}
 		res, err := client.EstimateTemplateCost(req)
 		if err != nil {
 			fmt.Println()
